@@ -1,6 +1,8 @@
 """make variations of input image"""
 
 import argparse, os, sys, glob
+sys.path.append(os.path.abspath(os.getcwd()))
+print(sys.path)
 import PIL
 import torch
 import numpy as np
@@ -40,7 +42,7 @@ def load_model_from_config(config, ckpt, verbose=False):
         print("unexpected keys:")
         print(u)
 
-    model.cuda()
+    # model.cuda()
     model.eval()
     return model
 
@@ -56,8 +58,7 @@ def load_img(path):
     image = torch.from_numpy(image)
     return 2.*image - 1.
 
-
-def main():
+def params():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -192,7 +193,10 @@ def main():
         choices=["full", "autocast"],
         default="autocast"
     )
+    return parser
 
+def main():
+    parser=params()
     opt = parser.parse_args()
     seed_everything(opt.seed)
 
